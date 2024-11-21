@@ -16,13 +16,12 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # Build job
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./blenderbin
-    env: # Add your Firebase environment variables here
+    env:
       NEXT_PUBLIC_FIREBASE_API_KEY: ${{ secrets.NEXT_PUBLIC_FIREBASE_API_KEY }}
       NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: ${{ secrets.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN }}
       NEXT_PUBLIC_FIREBASE_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_FIREBASE_PROJECT_ID }}
@@ -80,6 +79,14 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
+      - name: Install Firebase dependencies
+        run: |
+          npm install firebase-functions
+          npm install firebase-admin
+          npm install @types/firebase-functions --save-dev
+          npm install stripe
+          npm install cors
+
       - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
@@ -88,7 +95,6 @@ jobs:
         with:
           path: ./blenderbin/out
 
-  # Deployment job
   deploy:
     environment:
       name: github-pages
