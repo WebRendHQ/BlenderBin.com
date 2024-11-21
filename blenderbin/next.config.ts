@@ -3,13 +3,20 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   reactStrictMode: true,
   pageExtensions: ['tsx', 'ts', 'jsx', 'js'],
-  webpack: (config) => {  // Remove { isServer } if we're not using it
-    // Exclude the functions directory from webpack compilation
-    config.watchOptions = {
-      ...config.watchOptions,
-      ignored: [...(config.watchOptions?.ignored ?? []), '**/functions/**']
-    };
-    return config;
+  webpack: (config) => {
+    return {
+      ...config,
+      watchOptions: {
+        ...config.watchOptions,
+        ignored: [
+          // Ensure we have a default array if config.watchOptions?.ignored doesn't exist
+          ...(Array.isArray(config.watchOptions?.ignored) 
+            ? config.watchOptions.ignored 
+            : ['/node_modules/']),
+          '**/functions/**'
+        ]
+      }
+    }
   }
 }
 
