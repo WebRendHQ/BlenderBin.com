@@ -1,3 +1,4 @@
+// At the root of your project
 {
   "compilerOptions": {
     "target": "ES2017",
