@@ -20,6 +20,9 @@
 # production
 /build
 
+# Firebase Functions
+/functions
+
 # misc
 .DS_Store
 *.pem
