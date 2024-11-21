@@ -1,4 +1,6 @@
 // components/Button.tsx
+'use client';
+
 type ButtonProps = {
     label: string;
     onClick: () => void;
